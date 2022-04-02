@@ -51,6 +51,10 @@ public class Order {
         return totalPrice;
     }
 
+    public void setTotalPrice() {
+
+    }
+
     public void setTotalPrice(double totalPrice) {
         this.totalPrice = totalPrice;
     }

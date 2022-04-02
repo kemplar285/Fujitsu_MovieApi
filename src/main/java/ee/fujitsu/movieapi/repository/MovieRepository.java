@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Repository
-public class MovieRepository {
+public class MovieRepository implements IRepository<Movie>{
     private static final Logger logger = LoggerFactory.getLogger(MovieRepository.class);
     private final ObjectMapper mapper = new ObjectMapper(new YAMLFactory()).findAndRegisterModules();
     private ApiConfiguration apiConfiguration;
@@ -40,10 +40,10 @@ public class MovieRepository {
     public void initializeFields() throws IOException {
         this.dataFile = new File(
                 apiConfiguration.getFilePath() +
-                        apiConfiguration.getFileName() +
+                        apiConfiguration.getMovieFileName() +
                         apiConfiguration.getFileExtension()
         );
-        this.movies = findAllMoviesFromFile();
+        this.movies = findAllFromFile();
     }
 
     /**
@@ -51,7 +51,8 @@ public class MovieRepository {
      *
      * @return movies - A list of movies
      */
-    public List<Movie> findAllMoviesFromFile() throws IOException {
+    @Override
+    public List<Movie> findAllFromFile() throws IOException {
         Movie[] objects = mapper.readValue(dataFile, Movie[].class);
         List<Movie> movies = new ArrayList<>(List.of(objects));
         movies.forEach(movie -> {
@@ -66,7 +67,8 @@ public class MovieRepository {
      *
      * @throws IOException TBA
      */
-    public void saveMoviesToFile() throws IOException {
+    @Override
+    public void saveToFile() throws IOException {
         if (apiConfiguration.getFileExtension().equals(".json")) {
             new ObjectMapper().findAndRegisterModules().writeValue(dataFile, movies);
         } else if (apiConfiguration.getFileExtension().equals(".yaml")) {
@@ -79,7 +81,8 @@ public class MovieRepository {
      *
      * @return list of movies
      */
-    public List<Movie> getMovies() {
+    @Override
+    public List<Movie> findAll() {
         return movies;
     }
 
@@ -98,17 +101,9 @@ public class MovieRepository {
         movie.setPriceClass();
         movie.setPrice();
         movies.add(movie);
-        saveMoviesToFile();
+        saveToFile();
         return movie;
     }
-
-    /**
-     * Checks if there are any movies with the same ID in movies list
-     *
-     * @param id movie imdb id
-     * @return true or false
-     * @throws MovieIdNotUniqueException movie id should be unique
-     */
 
     /**
      * Removes movie from the movies list and saves it to file
@@ -121,7 +116,7 @@ public class MovieRepository {
         movies.stream().filter(movie -> movie.getImdbId().equals(id))
                 .findAny().orElseThrow(MovieNotFoundException::new);
         movies.removeIf(movie -> movie.getImdbId().equals(id));
-        saveMoviesToFile();
+        saveToFile();
 
     }
 
@@ -140,7 +135,7 @@ public class MovieRepository {
         movies.stream().filter(mov -> mov.getImdbId().equals(id))
                 .findAny().orElseThrow(MovieNotFoundException::new);
         movies.replaceAll(mov -> mov.getImdbId().equals(id) ? movie : mov);
-        saveMoviesToFile();
+        saveToFile();
     }
 
     /**
@@ -169,7 +164,8 @@ public class MovieRepository {
      * @return first movie with this imdb id in the file
      * @throws MovieNotFoundException movie not found
      */
-    public Movie findMovieById(String id) throws MovieNotFoundException {
+    @Override
+    public Movie findById(String id) throws MovieNotFoundException {
         return movies.stream().filter(movie -> movie.getImdbId().equals(id))
                 .findFirst().orElseThrow(MovieNotFoundException::new);
     }

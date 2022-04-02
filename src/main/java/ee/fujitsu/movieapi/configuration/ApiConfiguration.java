@@ -9,8 +9,10 @@ public class ApiConfiguration {
     private String fileExtension;
     @Value("${db.filePath}")
     private String filePath;
-    @Value("${db.fileName}")
-    private String fileName;
+    @Value("${db.movieDbFileName}")
+    private String movieFileName;
+    @Value("${db.orderDbFileName}")
+    private String orderFileName;
     @Value("${omdb.apiKey}")
     private String apiKey;
 
@@ -22,11 +24,15 @@ public class ApiConfiguration {
         return filePath;
     }
 
-    public String getFileName() {
-        return fileName;
+    public String getMovieFileName() {
+        return movieFileName;
     }
 
     public String getApiKey() {
         return apiKey;
+    }
+
+    public String getOrderFileName() {
+        return orderFileName;
     }
 }

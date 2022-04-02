@@ -36,7 +36,7 @@ public class MovieController {
      */
     @GetMapping
     public ResponseEntity<?> findAll() {
-        List<Movie> movies = movieRepository.getMovies();
+        List<Movie> movies = movieRepository.findAll();
         if (movies.size() > 0) {
             return new ResponseEntity<>(movies, HttpStatus.OK);
         } else {
@@ -141,7 +141,7 @@ public class MovieController {
     @RequestMapping(method = RequestMethod.GET, params = {"id"}, value={"/id"})
     public ResponseEntity<?> findMovieById(@RequestParam String id) {
         try {
-            return new ResponseEntity<>(movieRepository.findMovieById(id), HttpStatus.OK);
+            return new ResponseEntity<>(movieRepository.findById(id), HttpStatus.OK);
         } catch (MovieNotFoundException e) {
             logger.warn(e.getMessage());
             return ResponseEntity.noContent().build();
