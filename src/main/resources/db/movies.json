@@ -1,1 +1,1 @@
-[{"imdbId":"testId","title":"JsonTitle","releaseDate":"04.01.2022","categories":["Drama","Biography"],"priceClass":"NEW","price":5.0},{"imdbId":"1","title":"add1","releaseDate":"04.01.2020","categories":["Action"],"priceClass":"REGULAR","price":3.49}]
+[{"imdbId":"testId","title":"JsonTitle","releaseDate":"04.01.2022","categories":["Drama","Biography"],"priceClass":"NEW","price":5.0},{"imdbId":"1","title":"updated","releaseDate":"11.04.2021","categories":["Drama","Biography"],"priceClass":"NEW","price":5.0}]

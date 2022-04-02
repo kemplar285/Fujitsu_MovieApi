@@ -13,7 +13,7 @@ public enum MoviePriceClass {
      * @param releaseDate movie release date
      * @return enum movie price class
      */
-    public static MoviePriceClass getMoviePriceClass(LocalDate releaseDate) {
+    public static MoviePriceClass getMoviePriceClass(LocalDate releaseDate) throws NullPointerException{
         LocalDate today = LocalDate.now();
         long weeks = ChronoUnit.WEEKS.between(releaseDate, today);
         if (!releaseDate.isAfter(today)) {

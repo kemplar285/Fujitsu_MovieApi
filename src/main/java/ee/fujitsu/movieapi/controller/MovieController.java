@@ -2,6 +2,7 @@ package ee.fujitsu.movieapi.controller;
 
 import ee.fujitsu.movieapi.exception.MovieIdNotUniqueException;
 import ee.fujitsu.movieapi.exception.MovieNotFoundException;
+import ee.fujitsu.movieapi.exception.MovieValidationException;
 import ee.fujitsu.movieapi.model.movie.Movie;
 import ee.fujitsu.movieapi.repository.MovieRepository;
 import org.slf4j.Logger;
@@ -9,10 +10,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 @RestController
 @RequestMapping(path = "/movies")
@@ -46,7 +49,6 @@ public class MovieController {
      *
      * @param movie movie in json format
      * @return new list of movies
-     * @throws IOException TBA
      */
     @PostMapping("/add")
     public ResponseEntity<?> addMovie(@RequestBody Movie movie)  {
@@ -66,7 +68,6 @@ public class MovieController {
      *
      * @param id
      * @return responseEntity 'movie deleted', httpstatus ok
-     * @throws IOException TBA
      */
     @DeleteMapping("/delete")
     public ResponseEntity<?> deleteMovie(@RequestParam String id){
@@ -82,6 +83,68 @@ public class MovieController {
         }catch (NullPointerException nul){
             logger.warn(nul.getMessage());
             return ResponseEntity.badRequest().body("Id not found");
+        }
+    }
+
+    /**
+     * Replaces the movie with provided imdbID with the movie from request body
+     * @param id imdb id
+     * @param movie new movie
+     * @return ResponseEntity with status code or message
+     */
+    @PutMapping("/update")
+    public ResponseEntity<?> updateMovie(@RequestParam String id, @RequestBody Movie movie){
+        try {
+            movieRepository.updateMovie(id, movie);
+            return ResponseEntity.ok("Movie updated");
+        } catch (MovieNotFoundException e) {
+            logger.warn(e.getMessage());
+            return ResponseEntity.badRequest().body("Movie not found");
+        } catch (IOException e) {
+            logger.warn(e.getMessage());
+            return ResponseEntity.badRequest().body("Movie not found");
+        } catch (MovieIdNotUniqueException e) {
+            logger.warn(e.getMessage());
+            return ResponseEntity.badRequest().body("Movie id should be unique");
+        } catch (MovieValidationException e) {
+            logger.warn(e.getMessage());
+            return ResponseEntity.badRequest().body("Movie body should contain at least 3 values: title, imdbId, releaseDate");
+        } catch (HttpMessageNotReadableException e){
+            logger.warn(e.getMessage());
+            return ResponseEntity.badRequest().body("Bad request");
+        }
+    }
+
+    /**
+     * Returns all movies where categories set contains the specified category
+     * @param category
+     * @return ResponseEntity with movies of that category
+     */
+    @GetMapping("/{category}")
+    public ResponseEntity<?> findMoviesByCategory(@PathVariable String category){
+        category = category.trim().toLowerCase(Locale.ROOT);
+        try {
+            return new ResponseEntity<>(movieRepository.findMoviesByCategory(category), HttpStatus.OK);
+        } catch (MovieNotFoundException e) {
+            logger.warn(e.getMessage());
+            return ResponseEntity.noContent().build();
+        }
+    }
+
+    /**
+     * Returns a movie with the specified imdbID
+     *
+     * @param id imdbID
+     * @return movie with the specified imdbID
+     * @throws Exception TBA
+     */
+    @RequestMapping(method = RequestMethod.GET, params = {"id"}, value={"/id"})
+    public ResponseEntity<?> findMovieById(@RequestParam String id) {
+        try {
+            return new ResponseEntity<>(movieRepository.findMovieById(id), HttpStatus.OK);
+        } catch (MovieNotFoundException e) {
+            logger.warn(e.getMessage());
+            return ResponseEntity.noContent().build();
         }
     }
 
