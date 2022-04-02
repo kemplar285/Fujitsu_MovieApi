@@ -1,6 +1,6 @@
 package ee.fujitsu.movieapi.utils;
 
-import ee.fujitsu.movieapi.exception.MovieValidationException;
+import ee.fujitsu.movieapi.exception.movie.MovieValidationException;
 import ee.fujitsu.movieapi.model.movie.Movie;
 
 import java.util.List;

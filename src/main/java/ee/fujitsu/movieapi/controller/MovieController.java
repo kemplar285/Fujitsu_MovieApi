@@ -1,8 +1,8 @@
 package ee.fujitsu.movieapi.controller;
 
-import ee.fujitsu.movieapi.exception.MovieIdNotUniqueException;
-import ee.fujitsu.movieapi.exception.MovieNotFoundException;
-import ee.fujitsu.movieapi.exception.MovieValidationException;
+import ee.fujitsu.movieapi.exception.movie.MovieIdNotUniqueException;
+import ee.fujitsu.movieapi.exception.movie.MovieNotFoundException;
+import ee.fujitsu.movieapi.exception.movie.MovieValidationException;
 import ee.fujitsu.movieapi.model.movie.Movie;
 import ee.fujitsu.movieapi.repository.MovieRepository;
 import org.slf4j.Logger;
