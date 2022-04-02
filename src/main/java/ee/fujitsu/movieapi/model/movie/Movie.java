@@ -1,13 +1,12 @@
 package ee.fujitsu.movieapi.model.movie;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
 
 import java.time.LocalDate;
 import java.util.Set;
 
+
+@JsonPropertyOrder({ "imdbId", "title", "releaseDate", "categories", "priceClass", "price" })
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Movie {
@@ -55,6 +54,9 @@ public class Movie {
         return priceClass;
     }
 
+    /**
+     * Automatically sets price class basing on movie's release date
+     */
     public void setPriceClass() {
         this.priceClass = MoviePriceClass.getMoviePriceClass(this.releaseDate);
     }
@@ -63,6 +65,9 @@ public class Movie {
         return price;
     }
 
+    /**
+     * Automatically sets price basing on movie's price class
+     */
     public void setPrice() {
         switch (getPriceClass()) {
             case NEW:
