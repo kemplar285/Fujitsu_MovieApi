@@ -5,9 +5,9 @@
  - Maven 4.0.0
 
 # 1. Running the application
- ## Run from command line (json database) - Default
+ ## Run from command line (JSON database) - Default
       mvn spring-boot:run
-  ## Run from command line (yaml database)
+  ## Run from command line (YAML database)
       mvn spring-boot:run -Dspring-boot.run.arguments="--db.fileExtension=.yaml"
 
  
