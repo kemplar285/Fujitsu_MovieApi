@@ -1,4 +1,4 @@
-package ee.fujitsu.movieapi.model.movie;
+package ee.fujitsu.movieapi.db.model.movie;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;

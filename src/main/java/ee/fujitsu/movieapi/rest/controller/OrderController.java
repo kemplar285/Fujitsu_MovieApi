@@ -1,9 +1,7 @@
-package ee.fujitsu.movieapi.controller;
+package ee.fujitsu.movieapi.rest.controller;
 
-import ee.fujitsu.movieapi.model.movie.Movie;
-import ee.fujitsu.movieapi.model.order.Order;
-import ee.fujitsu.movieapi.repository.MovieRepository;
-import ee.fujitsu.movieapi.repository.OrderRepository;
+import ee.fujitsu.movieapi.db.model.order.Order;
+import ee.fujitsu.movieapi.db.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package ee.fujitsu.movieapi.model.order;
+package ee.fujitsu.movieapi.db.model.order;
 
 public class OrderItem {
     private int itemId;

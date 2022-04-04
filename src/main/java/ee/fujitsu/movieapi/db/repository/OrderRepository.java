@@ -1,10 +1,9 @@
-package ee.fujitsu.movieapi.repository;
+package ee.fujitsu.movieapi.db.repository;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import ee.fujitsu.movieapi.configuration.ApiConfiguration;
-import ee.fujitsu.movieapi.model.movie.Movie;
-import ee.fujitsu.movieapi.model.order.Order;
+import ee.fujitsu.movieapi.db.configuration.ApiConfiguration;
+import ee.fujitsu.movieapi.db.model.order.Order;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

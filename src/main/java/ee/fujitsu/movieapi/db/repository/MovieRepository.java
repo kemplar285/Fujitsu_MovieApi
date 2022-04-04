@@ -1,13 +1,13 @@
-package ee.fujitsu.movieapi.repository;
+package ee.fujitsu.movieapi.db.repository;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import ee.fujitsu.movieapi.configuration.ApiConfiguration;
-import ee.fujitsu.movieapi.exception.movie.MovieIdNotUniqueException;
-import ee.fujitsu.movieapi.exception.movie.MovieNotFoundException;
-import ee.fujitsu.movieapi.exception.movie.MovieValidationException;
-import ee.fujitsu.movieapi.model.movie.Movie;
-import ee.fujitsu.movieapi.utils.MovieUtils;
+import ee.fujitsu.movieapi.db.configuration.ApiConfiguration;
+import ee.fujitsu.movieapi.rest.api.exception.movie.MovieIdNotUniqueException;
+import ee.fujitsu.movieapi.rest.api.exception.movie.MovieNotFoundException;
+import ee.fujitsu.movieapi.rest.api.exception.movie.MovieValidationException;
+import ee.fujitsu.movieapi.db.model.movie.Movie;
+import ee.fujitsu.movieapi.rest.controller.utils.MovieUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package ee.fujitsu.movieapi.exception.movie;
+package ee.fujitsu.movieapi.rest.api.exception.movie;
 
 public class MovieIdNotUniqueException extends Exception{
     public MovieIdNotUniqueException() {

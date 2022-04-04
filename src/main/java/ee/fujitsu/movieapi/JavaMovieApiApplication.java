@@ -1,5 +1,5 @@
 package ee.fujitsu.movieapi;
-import ee.fujitsu.movieapi.configuration.ApiConfiguration;
+import ee.fujitsu.movieapi.db.configuration.ApiConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;

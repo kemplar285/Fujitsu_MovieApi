@@ -1,4 +1,4 @@
-package ee.fujitsu.movieapi.repository;
+package ee.fujitsu.movieapi.db.repository;
 
 import java.util.List;
 

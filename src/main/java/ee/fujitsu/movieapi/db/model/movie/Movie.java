@@ -1,4 +1,4 @@
-package ee.fujitsu.movieapi.model.movie;
+package ee.fujitsu.movieapi.db.model.movie;
 
 import com.fasterxml.jackson.annotation.*;
 

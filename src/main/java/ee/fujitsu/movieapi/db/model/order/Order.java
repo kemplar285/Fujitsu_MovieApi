@@ -1,4 +1,4 @@
-package ee.fujitsu.movieapi.model.order;
+package ee.fujitsu.movieapi.db.model.order;
 
 import java.time.LocalDateTime;
 import java.util.List;
