@@ -28,7 +28,7 @@ public class Order {
         return orderId;
     }
 
-    public void generateOrderId(){
+    public void generateOrderId() {
         UUID uuid = UUID.randomUUID();
         this.orderId = uuid.toString();
     }
@@ -66,9 +66,11 @@ public class Order {
     }
 
     public void calculateTotalPrice() {
+        BigDecimal total = BigDecimal.valueOf(0);
         for(OrderItem item : orderItemList){
-            this.totalPrice.add(item.getTotalPrice());
+            total = total.add(item.getTotalPrice());
         }
+        setTotalPrice(total);
     }
 
     public void addToOrderItems(OrderItem orderItem) {

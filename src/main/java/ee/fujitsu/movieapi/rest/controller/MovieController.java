@@ -154,6 +154,7 @@ public class MovieController {
         try {
             MovieApiResponse response = new MovieApiResponse();
             response.setResponseCode(ResponseCode.OK);
+            response.setMessage("Movie found.");
             response.setData(List.of(movieRepository.findById(id)));
             return new ResponseEntity<>(response, HttpStatus.OK);
 
