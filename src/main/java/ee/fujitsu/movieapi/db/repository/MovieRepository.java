@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import ee.fujitsu.movieapi.db.configuration.ApiConfiguration;
 import ee.fujitsu.movieapi.rest.api.exception.movie.MovieIdNotUniqueException;
-import ee.fujitsu.movieapi.rest.api.exception.movie.MovieNotFoundException;
+import ee.fujitsu.movieapi.rest.api.exception.general.NotFoundException;
 import ee.fujitsu.movieapi.rest.api.exception.movie.MovieValidationException;
 import ee.fujitsu.movieapi.db.model.movie.Movie;
 import ee.fujitsu.movieapi.rest.controller.utils.MovieUtils;
@@ -94,7 +94,7 @@ public class MovieRepository implements IRepository<Movie>{
      * @return movies List of movies
      * @throws IOException TBA
      */
-    public Movie addMovie(Movie movie) throws IOException, MovieIdNotUniqueException {
+    public Movie add(Movie movie) throws IOException, MovieIdNotUniqueException {
         if (!MovieUtils.checkUnique(movie.getImdbId(), movies)) {
             throw new MovieIdNotUniqueException();
         }
@@ -112,9 +112,9 @@ public class MovieRepository implements IRepository<Movie>{
      * @throws IOException TBA
      */
 
-    public void deleteMovieFromFile(String id) throws MovieNotFoundException, IOException, NullPointerException {
+    public void deleteMovieFromFile(String id) throws NotFoundException, IOException, NullPointerException {
         movies.stream().filter(movie -> movie.getImdbId().equals(id))
-                .findAny().orElseThrow(MovieNotFoundException::new);
+                .findAny().orElseThrow(NotFoundException::new);
         movies.removeIf(movie -> movie.getImdbId().equals(id));
         saveToFile();
 
@@ -128,12 +128,12 @@ public class MovieRepository implements IRepository<Movie>{
      * @param movie movie to replace the target with
      * @throws IOException TBA
      */
-    public void updateMovie(String id, Movie movie) throws IOException, MovieNotFoundException, MovieIdNotUniqueException, MovieValidationException {
+    public void updateMovie(String id, Movie movie) throws IOException, NotFoundException, MovieIdNotUniqueException, MovieValidationException {
         MovieUtils.checkNecessaryFieldsPresent(movie);
         movie.setPriceClass();
         movie.setPrice();
         movies.stream().filter(mov -> mov.getImdbId().equals(id))
-                .findAny().orElseThrow(MovieNotFoundException::new);
+                .findAny().orElseThrow(NotFoundException::new);
         movies.replaceAll(mov -> mov.getImdbId().equals(id) ? movie : mov);
         saveToFile();
     }
@@ -144,7 +144,7 @@ public class MovieRepository implements IRepository<Movie>{
      * @param categoryName the category you want to display
      * @return a list of movies
      */
-    public List<Movie> findMoviesByCategory(String categoryName) throws MovieNotFoundException {
+    public List<Movie> findMoviesByCategory(String categoryName) throws NotFoundException {
         List<Movie> moviesToReturn = movies.stream()
                 .filter(s -> s.getCategories().stream()
                         .anyMatch(categoryName::equalsIgnoreCase))
@@ -152,7 +152,7 @@ public class MovieRepository implements IRepository<Movie>{
         if(moviesToReturn.size()>0){
             return moviesToReturn;
         }else{
-            throw new MovieNotFoundException();
+            throw new NotFoundException();
         }
 
     }
@@ -162,12 +162,12 @@ public class MovieRepository implements IRepository<Movie>{
      *
      * @param id IMDB id
      * @return first movie with this imdb id in the file
-     * @throws MovieNotFoundException movie not found
+     * @throws NotFoundException movie not found
      */
     @Override
-    public Movie findById(String id) throws MovieNotFoundException {
+    public Movie findById(String id) throws NotFoundException {
         return movies.stream().filter(movie -> movie.getImdbId().equals(id))
-                .findFirst().orElseThrow(MovieNotFoundException::new);
+                .findFirst().orElseThrow(NotFoundException::new);
     }
 
 

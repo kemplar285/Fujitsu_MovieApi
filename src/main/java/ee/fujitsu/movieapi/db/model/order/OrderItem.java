@@ -1,17 +1,27 @@
 package ee.fujitsu.movieapi.db.model.order;
 
-public class OrderItem {
-    private int itemId;
-    private String movieId;
-    private int rentDuration;
-    private double price;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import ee.fujitsu.movieapi.db.model.BigDecimalSerializer;
+import ee.fujitsu.movieapi.db.model.movie.MoviePriceClass;
 
-    public int getItemId() {
-        return itemId;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
+public class OrderItem {
+    private String movieId;
+    private LocalDate movieReleaseDate;
+    private int rentDurationInWeeks;
+    @JsonSerialize(using = BigDecimalSerializer.class)
+    private BigDecimal currentPricePerWeek;
+    @JsonSerialize(using = BigDecimalSerializer.class)
+    private BigDecimal totalPrice = BigDecimal.valueOf(0);
+
+    public LocalDate getMovieReleaseDate() {
+        return movieReleaseDate;
     }
 
-    public void setItemId(int itemId) {
-        this.itemId = itemId;
+    public void setMovieReleaseDate(LocalDate movieReleaseDate) {
+        this.movieReleaseDate = movieReleaseDate;
     }
 
     public String getMovieId() {
@@ -22,19 +32,31 @@ public class OrderItem {
         this.movieId = movieId;
     }
 
-    public int getRentDuration() {
-        return rentDuration;
+    public int getRentDurationInWeeks() {
+        return rentDurationInWeeks;
     }
 
-    public void setRentDuration(int rentDuration) {
-        this.rentDuration = rentDuration;
+    public void setRentDurationInWeeks(int rentDurationInWeeks) {
+        this.rentDurationInWeeks = rentDurationInWeeks;
     }
 
-    public double getPrice() {
-        return price;
+    public BigDecimal getCurrentPricePerWeek() {
+        return currentPricePerWeek;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    public void setCurrentPricePerWeek(BigDecimal currentPricePerWeek) {
+        this.currentPricePerWeek = currentPricePerWeek;
+    }
+
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public void calculateTotalPrice() {
+        this.totalPrice = MoviePriceClass.calculateTotalPrice(movieReleaseDate, rentDurationInWeeks);
     }
 }

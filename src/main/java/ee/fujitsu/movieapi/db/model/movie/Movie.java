@@ -1,7 +1,10 @@
 package ee.fujitsu.movieapi.db.model.movie;
 
 import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import ee.fujitsu.movieapi.db.model.BigDecimalSerializer;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -16,7 +19,10 @@ public class Movie {
     public LocalDate releaseDate;
     private Set<String> categories;
     private MoviePriceClass priceClass;
-    private double price;
+    @JsonSerialize(using = BigDecimalSerializer.class)
+    private BigDecimal price;
+    public MovieMetadata movieMetadata;
+
 
     public String getImdbId() {
         return imdbId;
@@ -61,7 +67,7 @@ public class Movie {
         this.priceClass = MoviePriceClass.getMoviePriceClass(this.releaseDate);
     }
 
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
@@ -71,13 +77,13 @@ public class Movie {
     public void setPrice() {
         switch (getPriceClass()) {
             case NEW:
-                this.price = 5.0;
+                this.price = (BigDecimal.valueOf(MoviePriceClass.PriceClassConstants.NEW_PRICE));
                 break;
             case REGULAR:
-                this.price = 3.49;
+                this.price = (BigDecimal.valueOf(MoviePriceClass.PriceClassConstants.REGULAR_PRICE));
                 break;
             case OLD:
-                this.price = 1.99;
+                this.price = (BigDecimal.valueOf(MoviePriceClass.PriceClassConstants.OLD_PRICE));
                 break;
         }
     }

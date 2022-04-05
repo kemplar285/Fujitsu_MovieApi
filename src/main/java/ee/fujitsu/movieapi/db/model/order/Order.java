@@ -1,26 +1,44 @@
 package ee.fujitsu.movieapi.db.model.order;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import ee.fujitsu.movieapi.db.model.BigDecimalSerializer;
+
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class Order {
-    private int orderId;
-    private List<OrderItem> orderItemList;
+    private String orderId;
+    private List<OrderItem> orderItemList = new ArrayList<>();
     private LocalDateTime timestamp = LocalDateTime.now();
-    private boolean confirmed = false;
-    private double totalPrice = 0;
+    private OrderStatus orderStatus = OrderStatus.OPEN;
+    @JsonSerialize(using = BigDecimalSerializer.class)
+    private BigDecimal totalPrice = BigDecimal.valueOf(0);
 
-    public Order(int orderId, List<OrderItem> orderItemList){
-        this.orderId = orderId;
+    public Order(List<OrderItem> orderItemList) {
         this.orderItemList = orderItemList;
     }
 
-    public int getOrderId() {
+    public Order() {
+    }
+
+    public String getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(int orderId) {
-        this.orderId = orderId;
+    public void generateOrderId(){
+        UUID uuid = UUID.randomUUID();
+        this.orderId = uuid.toString();
+    }
+
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
     }
 
     public List<OrderItem> getOrderItemList() {
@@ -39,23 +57,21 @@ public class Order {
         this.timestamp = timestamp;
     }
 
-    public boolean isConfirmed() {
-        return confirmed;
-    }
-
-    public void setConfirmed(boolean confirmed) {
-        this.confirmed = confirmed;
-    }
-
-    public double getTotalPrice() {
+    public BigDecimal getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice() {
-
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
-    public void setTotalPrice(double totalPrice) {
-        this.totalPrice = totalPrice;
+    public void calculateTotalPrice() {
+        for(OrderItem item : orderItemList){
+            this.totalPrice.add(item.getTotalPrice());
+        }
+    }
+
+    public void addToOrderItems(OrderItem orderItem) {
+        this.orderItemList.add(orderItem);
     }
 }

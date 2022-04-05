@@ -1,1 +1,1 @@
-[]
+[{"orderId":"f2d04cbf-9195-4681-9f9d-44ea11115525","orderItemList":[{"movieId":"1","movieReleaseDate":[2021,4,11],"rentDurationInWeeks":2,"currentPricePerWeek":"5.00","totalPrice":"6.98"}],"timestamp":[2022,4,5,14,49,49,218074000],"orderStatus":"OPEN","totalPrice":"0.00"}]

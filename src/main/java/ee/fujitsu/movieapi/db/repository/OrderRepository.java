@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import ee.fujitsu.movieapi.db.configuration.ApiConfiguration;
 import ee.fujitsu.movieapi.db.model.order.Order;
+import ee.fujitsu.movieapi.rest.api.exception.general.NotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +44,6 @@ public class OrderRepository implements IRepository<Order>{
         Order[] objects = mapper.readValue(dataFile, Order[].class);
         List<Order> orders = new ArrayList<>(List.of(objects));
         orders.forEach(movie -> {
-            movie.setTotalPrice();
         });
         return orders;
     }
@@ -54,12 +54,23 @@ public class OrderRepository implements IRepository<Order>{
     }
 
     @Override
-    public void saveToFile() {
-
+    public void saveToFile() throws IOException {
+        if (apiConfiguration.getFileExtension().equals(".json")) {
+            new ObjectMapper().findAndRegisterModules().writeValue(dataFile, orders);
+        } else if (apiConfiguration.getFileExtension().equals(".yaml")) {
+            mapper.writeValue(dataFile, orders);
+        }
     }
 
     @Override
-    public Order findById(String id) {
-        return null;
+    public Order findById(String id) throws NotFoundException {
+        return orders.stream().filter(order -> String.valueOf(order.getOrderId()).equals(id))
+                .findFirst().orElseThrow(NotFoundException::new);
+    }
+
+    public Order add(Order order) throws IOException {
+        orders.add(order);
+        saveToFile();
+        return order;
     }
 }

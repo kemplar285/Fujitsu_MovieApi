@@ -1,7 +1,7 @@
 package ee.fujitsu.movieapi.rest.controller;
 
 import ee.fujitsu.movieapi.rest.api.exception.movie.MovieIdNotUniqueException;
-import ee.fujitsu.movieapi.rest.api.exception.movie.MovieNotFoundException;
+import ee.fujitsu.movieapi.rest.api.exception.general.NotFoundException;
 import ee.fujitsu.movieapi.db.model.movie.Movie;
 import ee.fujitsu.movieapi.db.repository.MovieRepository;
 import ee.fujitsu.movieapi.rest.api.exception.movie.MovieValidationException;
@@ -62,7 +62,7 @@ public class MovieController {
             MovieApiResponse response = new MovieApiResponse();
             response.setResponseCode(ResponseCode.OK);
             response.setMessage("Movie added.");
-            response.setData(List.of(movieRepository.addMovie(movie)));
+            response.setData(List.of(movieRepository.add(movie)));
             return new ResponseEntity<>(response, HttpStatus.OK);
 
         } catch (IOException | MovieIdNotUniqueException e) {
@@ -88,7 +88,7 @@ public class MovieController {
             movieRepository.deleteMovieFromFile(id);
             return new ResponseEntity<>(response, HttpStatus.OK);
 
-        } catch (MovieNotFoundException | IOException e) {
+        } catch (NotFoundException | IOException e) {
             GeneralApiResponse response = new GeneralApiResponse();
             response.setResponseCode(ResponseCode.INVALID_REQUEST);
             response.setMessage(e.getMessage());
@@ -112,7 +112,7 @@ public class MovieController {
             movieRepository.updateMovie(id, movie);
             return new ResponseEntity<>(response, HttpStatus.OK);
 
-        } catch (IOException | MovieNotFoundException | MovieIdNotUniqueException | MovieValidationException e) {
+        } catch (IOException | NotFoundException | MovieIdNotUniqueException | MovieValidationException e) {
             GeneralApiResponse response = new GeneralApiResponse();
             response.setResponseCode(ResponseCode.INVALID_REQUEST);
             response.setMessage(e.getMessage());
@@ -135,7 +135,7 @@ public class MovieController {
             response.setResponseCode(ResponseCode.OK);
             return new ResponseEntity<>(response, HttpStatus.OK);
 
-        } catch (MovieNotFoundException e) {
+        } catch (NotFoundException e) {
             GeneralApiResponse response = new GeneralApiResponse();
             response.setResponseCode(ResponseCode.INVALID_REQUEST);
             response.setMessage(e.getMessage());
@@ -148,17 +148,16 @@ public class MovieController {
      *
      * @param id imdbID
      * @return movie with the specified imdbID
-     * @throws Exception TBA
      */
-    @RequestMapping(method = RequestMethod.GET, params = {"id"}, value = {"/id"})
-    public ResponseEntity<?> findMovieById(@RequestParam String id) {
+    @RequestMapping(method = RequestMethod.GET, value = {"/id/{id}"})
+    public ResponseEntity<?> findMovieById(@PathVariable String id) {
         try {
             MovieApiResponse response = new MovieApiResponse();
             response.setResponseCode(ResponseCode.OK);
             response.setData(List.of(movieRepository.findById(id)));
             return new ResponseEntity<>(response, HttpStatus.OK);
 
-        } catch (MovieNotFoundException e) {
+        } catch (NotFoundException e) {
             GeneralApiResponse response = new GeneralApiResponse();
             response.setResponseCode(ResponseCode.INVALID_REQUEST);
             response.setMessage(e.getMessage());

@@ -13,6 +13,7 @@ public class JavaMovieApiApplication {
 	public static void main(String[] args) {
 		ConfigurableApplicationContext context = SpringApplication.run(JavaMovieApiApplication.class, args);
 		ApiConfiguration apiConfig = context.getBean(ApiConfiguration.class);
-		logger.info("Using database file: " + apiConfig.getMovieFileName() + apiConfig.getFileExtension());
+		logger.info("Using movie database file: " + apiConfig.getMovieFileName() + apiConfig.getFileExtension());
+		logger.info("Using order database file: " + apiConfig.getOrderFileName() + apiConfig.getFileExtension());
 	}
 }
