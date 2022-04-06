@@ -39,11 +39,19 @@ public enum MoviePriceClass {
         }
     }
 
+
+    /**
+     * Calculates total price, summing up prices per week
+     * @param releaseDate Movie release date
+     * @param rentWeeks Rent period in weeks
+     * @return Price
+     */
     public static BigDecimal calculateTotalPrice(LocalDate releaseDate, int rentWeeks){
         LocalDate orderDate = LocalDate.now();
         long releasedWeeksAgo = ChronoUnit.WEEKS.between(releaseDate, orderDate);
         long weeksEndOfRent = releasedWeeksAgo + rentWeeks;
         double total = 0;
+
         for(long i = weeksEndOfRent; i < weeksEndOfRent+rentWeeks; i++){
             if(i <= PriceClassConstants.WEEKS_NEW){
                 total += PriceClassConstants.NEW_PRICE;

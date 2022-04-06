@@ -3,6 +3,7 @@ package ee.fujitsu.movieapi.db.repository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import ee.fujitsu.movieapi.db.configuration.ApiConfiguration;
+import ee.fujitsu.movieapi.db.model.movie.MovieMetadata;
 import ee.fujitsu.movieapi.rest.api.exception.movie.MovieIdNotUniqueException;
 import ee.fujitsu.movieapi.rest.api.exception.general.NotFoundException;
 import ee.fujitsu.movieapi.rest.api.exception.movie.MovieValidationException;
@@ -11,7 +12,10 @@ import ee.fujitsu.movieapi.rest.controller.utils.MovieUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
@@ -21,16 +25,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Repository
-public class MovieRepository implements IRepository<Movie>{
+public class MovieRepository implements IRepository<Movie> {
     private static final Logger logger = LoggerFactory.getLogger(MovieRepository.class);
     private final ObjectMapper mapper = new ObjectMapper(new YAMLFactory()).findAndRegisterModules();
     private ApiConfiguration apiConfiguration;
     private File dataFile;
     private List<Movie> movies;
 
-    /**
-     * a setter method so that the Spring container can inject a configuration
-     */
     @Autowired
     public void setApiConfiguration(ApiConfiguration apiConfiguration) {
         this.apiConfiguration = apiConfiguration;
@@ -149,16 +150,16 @@ public class MovieRepository implements IRepository<Movie>{
                 .filter(s -> s.getCategories().stream()
                         .anyMatch(categoryName::equalsIgnoreCase))
                 .collect(Collectors.toList());
-        if(moviesToReturn.size()>0){
+        if (moviesToReturn.size() > 0) {
             return moviesToReturn;
-        }else{
+        } else {
             throw new NotFoundException();
         }
 
     }
 
     /**
-     * Finds a movie by imdb id
+     * Finds a movie by imdb id. If id is found in imdb, fetches additional metadata.
      *
      * @param id IMDB id
      * @return first movie with this imdb id in the file
@@ -166,7 +167,13 @@ public class MovieRepository implements IRepository<Movie>{
      */
     @Override
     public Movie findById(String id) throws NotFoundException {
+        String url = apiConfiguration.getOmdbUrl()
+                + "?apikey=" + apiConfiguration.getApiKey()
+                + "&i=" + id;
+        RestTemplate restTemplate = new RestTemplate();
+        MovieMetadata metadata = restTemplate.getForObject(url, MovieMetadata.class);
         return movies.stream().filter(movie -> movie.getImdbId().equals(id))
+                .peek(movie -> movie.setMovieMetadata(metadata))
                 .findFirst().orElseThrow(NotFoundException::new);
     }
 

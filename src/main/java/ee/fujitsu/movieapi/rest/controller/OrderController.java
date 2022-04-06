@@ -80,9 +80,7 @@ public class OrderController {
             return new ResponseEntity<>(response, HttpStatus.OK);
 
         } catch (IOException | NotFoundException e) {
-            GeneralApiResponse response = new GeneralApiResponse();
-            response.setResponseCode(ResponseCode.INVALID_REQUEST);
-            response.setMessage(e.getMessage());
+            GeneralApiResponse response = new GeneralApiResponse(ResponseCode.INVALID_REQUEST, e.getMessage());
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
     }
@@ -119,9 +117,7 @@ public class OrderController {
             return new ResponseEntity<>(response, HttpStatus.OK);
 
         } catch (NotFoundException | NullPointerException | OrderAlreadyClosedException e) {
-            GeneralApiResponse response = new GeneralApiResponse();
-            response.setResponseCode(ResponseCode.INVALID_REQUEST);
-            response.setMessage(e.getMessage());
+            GeneralApiResponse response = new GeneralApiResponse(ResponseCode.INVALID_REQUEST, e.getMessage());
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
     }
@@ -143,12 +139,16 @@ public class OrderController {
             return new ResponseEntity<>(response, HttpStatus.OK);
 
         } catch (NotFoundException e) {
-            GeneralApiResponse response = new GeneralApiResponse();
-            response.setResponseCode(ResponseCode.INVALID_REQUEST);
-            response.setMessage(e.getMessage());
+            GeneralApiResponse response = new GeneralApiResponse(ResponseCode.INVALID_REQUEST, e.getMessage());
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
     }
+
+    /**
+     * Closes the order. It then becomes immutable.
+     * @param orderId id of an order to close
+     * @return Final order invoice.
+     */
 
     @RequestMapping(value = "/checkout", method = RequestMethod.PUT)
     public ResponseEntity<?> checkout(@RequestParam String orderId) {
@@ -169,9 +169,7 @@ public class OrderController {
             return new ResponseEntity<>(response, HttpStatus.OK);
 
         } catch (NotFoundException | OrderAlreadyClosedException e) {
-            GeneralApiResponse response = new GeneralApiResponse();
-            response.setResponseCode(ResponseCode.INVALID_REQUEST);
-            response.setMessage(e.getMessage());
+            GeneralApiResponse response = new GeneralApiResponse(ResponseCode.INVALID_REQUEST, e.getMessage());
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
     }
@@ -190,9 +188,7 @@ public class OrderController {
             return new ResponseEntity<>(response, HttpStatus.OK);
 
         } catch (NotFoundException | IOException | OrderAlreadyClosedException e) {
-            GeneralApiResponse response = new GeneralApiResponse();
-            response.setResponseCode(ResponseCode.INVALID_REQUEST);
-            response.setMessage(e.getMessage());
+            GeneralApiResponse response = new GeneralApiResponse(ResponseCode.INVALID_REQUEST, e.getMessage());
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
     }

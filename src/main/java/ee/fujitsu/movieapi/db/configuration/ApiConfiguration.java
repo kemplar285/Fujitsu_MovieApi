@@ -15,6 +15,11 @@ public class ApiConfiguration {
     private String orderFileName;
     @Value("${omdb.apiKey}")
     private String apiKey;
+    private String omdbUrl = "http://www.omdbapi.com/";
+
+    public String getOmdbUrl() {
+        return omdbUrl;
+    }
 
     public String getFileExtension() {
         return fileExtension;

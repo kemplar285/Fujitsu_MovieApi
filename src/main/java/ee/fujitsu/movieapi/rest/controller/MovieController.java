@@ -43,9 +43,7 @@ public class MovieController {
             response.setResponseCode(ResponseCode.OK);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } else {
-            GeneralApiResponse response = new GeneralApiResponse();
-            response.setResponseCode(ResponseCode.OK);
-            response.setMessage("Movies not found");
+            GeneralApiResponse response = new GeneralApiResponse(ResponseCode.INVALID_REQUEST, "Movies not found");
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
     }
@@ -66,9 +64,7 @@ public class MovieController {
             return new ResponseEntity<>(response, HttpStatus.OK);
 
         } catch (IOException | MovieIdNotUniqueException e) {
-            GeneralApiResponse response = new GeneralApiResponse();
-            response.setResponseCode(ResponseCode.INVALID_REQUEST);
-            response.setMessage(e.getMessage());
+            GeneralApiResponse response = new GeneralApiResponse(ResponseCode.INVALID_REQUEST, e.getMessage());
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
     }
@@ -89,9 +85,7 @@ public class MovieController {
             return new ResponseEntity<>(response, HttpStatus.OK);
 
         } catch (NotFoundException | IOException e) {
-            GeneralApiResponse response = new GeneralApiResponse();
-            response.setResponseCode(ResponseCode.INVALID_REQUEST);
-            response.setMessage(e.getMessage());
+            GeneralApiResponse response = new GeneralApiResponse(ResponseCode.INVALID_REQUEST, e.getMessage());
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
     }
@@ -113,9 +107,7 @@ public class MovieController {
             return new ResponseEntity<>(response, HttpStatus.OK);
 
         } catch (IOException | NotFoundException | MovieIdNotUniqueException | MovieValidationException e) {
-            GeneralApiResponse response = new GeneralApiResponse();
-            response.setResponseCode(ResponseCode.INVALID_REQUEST);
-            response.setMessage(e.getMessage());
+            GeneralApiResponse response = new GeneralApiResponse(ResponseCode.INVALID_REQUEST, e.getMessage());
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
     }
@@ -136,9 +128,7 @@ public class MovieController {
             return new ResponseEntity<>(response, HttpStatus.OK);
 
         } catch (NotFoundException e) {
-            GeneralApiResponse response = new GeneralApiResponse();
-            response.setResponseCode(ResponseCode.INVALID_REQUEST);
-            response.setMessage(e.getMessage());
+            GeneralApiResponse response = new GeneralApiResponse(ResponseCode.INVALID_REQUEST, e.getMessage());
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
     }
@@ -159,9 +149,7 @@ public class MovieController {
             return new ResponseEntity<>(response, HttpStatus.OK);
 
         } catch (NotFoundException e) {
-            GeneralApiResponse response = new GeneralApiResponse();
-            response.setResponseCode(ResponseCode.INVALID_REQUEST);
-            response.setMessage(e.getMessage());
+            GeneralApiResponse response = new GeneralApiResponse(ResponseCode.INVALID_REQUEST, e.getMessage());
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
     }

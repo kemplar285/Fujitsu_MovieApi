@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.Set;
 
 
-@JsonPropertyOrder({ "imdbId", "title", "releaseDate", "categories", "priceClass", "price" })
+@JsonPropertyOrder({ "imdbId", "title", "releaseDate", "categories", "priceClass", "price", "metadata"})
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Movie {
@@ -21,8 +21,8 @@ public class Movie {
     private MoviePriceClass priceClass;
     @JsonSerialize(using = BigDecimalSerializer.class)
     private BigDecimal price;
+    @JsonProperty("metadata")
     public MovieMetadata movieMetadata;
-
 
     public String getImdbId() {
         return imdbId;
@@ -58,6 +58,22 @@ public class Movie {
 
     public MoviePriceClass getPriceClass() {
         return priceClass;
+    }
+
+    public void setPriceClass(MoviePriceClass priceClass) {
+        this.priceClass = priceClass;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public MovieMetadata getMovieMetadata() {
+        return movieMetadata;
+    }
+
+    public void setMovieMetadata(MovieMetadata movieMetadata) {
+        this.movieMetadata = movieMetadata;
     }
 
     /**
