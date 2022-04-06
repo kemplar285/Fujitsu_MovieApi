@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import ee.fujitsu.movieapi.db.configuration.ApiConfiguration;
 import ee.fujitsu.movieapi.db.model.order.Order;
+import ee.fujitsu.movieapi.db.model.statistics.OrderStatistics;
 import ee.fujitsu.movieapi.rest.api.exception.general.NotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,8 +22,10 @@ public class OrderRepository implements IRepository<Order>{
     private static final Logger logger = LoggerFactory.getLogger(OrderRepository.class);
     private final ObjectMapper mapper = new ObjectMapper(new YAMLFactory()).findAndRegisterModules();
     private ApiConfiguration apiConfiguration;
-    private File dataFile;
+    private File movieDataFile;
+    private File statsDataFile;
     private List<Order> orders;
+    private OrderStatistics statistics;
 
     @Autowired
     public void setApiConfiguration(ApiConfiguration apiConfiguration) {
@@ -31,12 +34,18 @@ public class OrderRepository implements IRepository<Order>{
 
     @PostConstruct
     public void initializeFields() throws IOException {
-        this.dataFile = new File(
+        this.movieDataFile = new File(
                 apiConfiguration.getFilePath() +
                         apiConfiguration.getOrderFileName() +
                         apiConfiguration.getFileExtension()
         );
+        this.statsDataFile = new File(
+                apiConfiguration.getFilePath() +
+                        apiConfiguration.getOrderStatsFileName() +
+                        apiConfiguration.getFileExtension()
+        );
         this.orders = findAllFromFile();
+        this.statistics = readStatisticsFromFile();
     }
 
     /**
@@ -46,7 +55,7 @@ public class OrderRepository implements IRepository<Order>{
      */
     @Override
     public List<Order> findAllFromFile() throws IOException {
-        Order[] objects = mapper.readValue(dataFile, Order[].class);
+        Order[] objects = mapper.readValue(movieDataFile, Order[].class);
         List<Order> orders = new ArrayList<>(List.of(objects));
         orders.forEach(movie -> {
         });
@@ -69,9 +78,9 @@ public class OrderRepository implements IRepository<Order>{
     @Override
     public void saveToFile() throws IOException {
         if (apiConfiguration.getFileExtension().equals(".json")) {
-            new ObjectMapper().findAndRegisterModules().writeValue(dataFile, orders);
+            new ObjectMapper().findAndRegisterModules().writeValue(movieDataFile, orders);
         } else if (apiConfiguration.getFileExtension().equals(".yaml")) {
-            mapper.writeValue(dataFile, orders);
+            mapper.writeValue(movieDataFile, orders);
         }
     }
 
@@ -111,11 +120,55 @@ public class OrderRepository implements IRepository<Order>{
         orders.replaceAll(ord -> ord.getOrderId().equals(ord.getOrderId()) ? order : ord);
     }
 
+    /**
+     * Deletes an order with provided id
+     * @param id orderId
+     * @throws NotFoundException
+     * @throws IOException
+     * @throws NullPointerException
+     */
     public void delete(String id) throws NotFoundException, IOException, NullPointerException {
         orders.stream().filter(order -> order.getOrderId().equals(id))
                 .findAny().orElseThrow(NotFoundException::new);
         orders.removeIf(order -> order.getOrderId().equals(id));
         saveToFile();
+    }
 
+
+    /**
+     * Saves statistics to the db file.
+     * The code here is duplicated from the top, but I haven't found a way to make it work in both cases
+     * @param orderStatistics Statistics to save
+     * @throws IOException Unable to write
+     */
+    public void recordStatistics(OrderStatistics orderStatistics) throws IOException {
+        this.statistics = orderStatistics;
+        if (apiConfiguration.getFileExtension().equals(".json")) {
+            new ObjectMapper().findAndRegisterModules().writeValue(statsDataFile, statistics);
+        } else if (apiConfiguration.getFileExtension().equals(".yaml")) {
+            mapper.writeValue(statsDataFile, statsDataFile);
+        }
+    }
+
+    /**
+     * Returns statistics
+     * @return statistics
+     */
+    public OrderStatistics getStatistics(){
+        return statistics;
+    }
+
+    /**
+     * Reads stats from file
+     * @return Statistics array
+     * @throws IOException Unable to read
+     */
+    private OrderStatistics readStatisticsFromFile() throws IOException {
+        this.statistics = mapper.readValue(statsDataFile, OrderStatistics.class);
+        if(this.statistics == null){
+            this.statistics = new OrderStatistics();
+            recordStatistics(this.statistics);
+        }
+        return statistics;
     }
 }

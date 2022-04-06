@@ -13,9 +13,16 @@ public class ApiConfiguration {
     private String movieFileName;
     @Value("${db.orderDbFileName}")
     private String orderFileName;
+    @Value("${db.orderStatsDbFileName}")
+    private String orderStatsFileName;
     @Value("${omdb.apiKey}")
     private String apiKey;
     private String omdbUrl = "http://www.omdbapi.com/";
+
+
+    public String getOrderStatsFileName() {
+        return orderStatsFileName;
+    }
 
     public String getOmdbUrl() {
         return omdbUrl;
