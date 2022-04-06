@@ -1,1 +1,17 @@
---- []
+---
+- imdbId: "tt0111161"
+  title: "The Shawshank Redemption"
+  releaseDate: "14.10.1994"
+  categories:
+  - "Drama"
+  priceClass: "OLD"
+  price: "1.99"
+- imdbId: "testId"
+  title: "testTitleUpdated"
+  releaseDate: "11.04.2021"
+  categories:
+  - "Drama"
+  - "Test"
+  - "Biography"
+  priceClass: "NEW"
+  price: "5.00"

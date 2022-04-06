@@ -17,7 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -39,7 +38,7 @@ public class OrderController {
      *
      * @return Response entity with all orders and status
      */
-    @GetMapping
+    @RequestMapping(value = "", method = RequestMethod.GET, produces="application/json")
     public ResponseEntity<?> findAll() {
         List<Order> orders = orderRepository.findAll();
         OrderApiResponse response = new OrderApiResponse();
@@ -58,7 +57,7 @@ public class OrderController {
      * @param orderItem OrderItem Body. Data needed - movieId, rentDurationInWeeks
      * @return ResponseEntity with order data and status code
      */
-    @RequestMapping(value = "/new", method = RequestMethod.POST)
+    @RequestMapping(value = "/new", method = RequestMethod.POST, consumes="application/json", produces = "application/json")
     public ResponseEntity<?> addOrder(@RequestBody OrderItem orderItem) {
         try {
             Movie movie = movieRepository.findById(orderItem.getMovieId());
@@ -92,7 +91,8 @@ public class OrderController {
      * @param orderItem New orderItem
      * @return ResponseEntity with order data and status code
      */
-    @RequestMapping(value = "/extend/{orderId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/extend/{orderId}", method = RequestMethod.POST, consumes="application/json"
+            , produces = "application/json")
     public ResponseEntity<?> addToOrder(@PathVariable String orderId, @RequestBody OrderItem orderItem) {
         try {
             Movie movie = movieRepository.findById(orderItem.getMovieId());
@@ -128,7 +128,7 @@ public class OrderController {
      * @param orderId order id
      * @return ResponseEntity with order and status code
      */
-    @RequestMapping(value = "/order/{orderId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{orderId}", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<?> findById(@PathVariable String orderId) {
         try {
             Order order = orderRepository.findById(orderId);
@@ -150,7 +150,7 @@ public class OrderController {
      * @return Final order invoice.
      */
 
-    @RequestMapping(value = "/checkout", method = RequestMethod.PUT)
+    @RequestMapping(value = "/checkout", method = RequestMethod.PUT, produces = "application/json")
     public ResponseEntity<?> checkout(@RequestParam String orderId) {
         try {
             Order order = orderRepository.findById(orderId);
@@ -174,7 +174,7 @@ public class OrderController {
         }
     }
 
-    @DeleteMapping("/delete")
+    @RequestMapping(value="/delete", method = RequestMethod.DELETE, produces = "application/json")
     public ResponseEntity<?> deleteMovie(@RequestParam String id) {
         try {
             if (orderRepository.findById(id).getOrderStatus().equals(OrderStatus.CLOSED)) {

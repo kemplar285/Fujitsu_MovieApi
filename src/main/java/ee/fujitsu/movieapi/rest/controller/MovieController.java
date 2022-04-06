@@ -34,7 +34,7 @@ public class MovieController {
      * @return a response entity with list of all movies
      * or http 204 noContent if list is empty
      */
-    @GetMapping
+    @RequestMapping(value = "", method = RequestMethod.GET, produces="application/json")
     public ResponseEntity<?> findAll() {
         List<Movie> movies = movieRepository.findAll();
         if (movies.size() > 0) {
@@ -54,7 +54,7 @@ public class MovieController {
      * @param movie movie in json format
      * @return new list of movies
      */
-    @PostMapping("/add")
+    @RequestMapping(value="/add", method = RequestMethod.POST, consumes="application/json")
     public ResponseEntity<?> addMovie(@RequestBody Movie movie) {
         try {
             MovieApiResponse response = new MovieApiResponse();
@@ -75,7 +75,7 @@ public class MovieController {
      * @param id Movie imdb id
      * @return responseEntity 'movie deleted', httpstatus ok
      */
-    @DeleteMapping("/delete")
+    @RequestMapping(value="/delete", method = RequestMethod.DELETE, produces = "application/json")
     public ResponseEntity<?> deleteMovie(@RequestParam String id) {
         try {
             GeneralApiResponse response = new GeneralApiResponse();
@@ -97,7 +97,7 @@ public class MovieController {
      * @param movie new movie
      * @return ResponseEntity with status code and message
      */
-    @PutMapping("/update")
+    @RequestMapping(value="/update", method = RequestMethod.PUT, consumes="application/json", produces = "application/json")
     public ResponseEntity<?> updateMovie(@RequestParam String id, @RequestBody Movie movie) {
         try {
             GeneralApiResponse response = new GeneralApiResponse();
@@ -118,7 +118,7 @@ public class MovieController {
      * @param category
      * @return ResponseEntity with movies of that category
      */
-    @GetMapping("/{category}")
+    @RequestMapping(value="/{category}", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<?> findMoviesByCategory(@PathVariable String category) {
         category = category.trim().toLowerCase(Locale.ROOT);
         try {
@@ -139,7 +139,7 @@ public class MovieController {
      * @param id imdbID
      * @return movie with the specified imdbID
      */
-    @RequestMapping(method = RequestMethod.GET, value = {"/id/{id}"})
+    @RequestMapping(value="/id/{id}", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<?> findMovieById(@PathVariable String id) {
         try {
             MovieApiResponse response = new MovieApiResponse();

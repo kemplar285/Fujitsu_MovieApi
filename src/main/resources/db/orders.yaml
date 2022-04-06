@@ -1,0 +1,21 @@
+---
+- orderId: "01950e2a-226d-4286-b1bc-e05d780b348c"
+  orderItemList:
+  - movieId: "testId"
+    movieReleaseDate:
+    - 2021
+    - 4
+    - 11
+    rentDurationInWeeks: 1
+    currentPricePerWeek: "5.00"
+    totalPrice: "5.00"
+  timestamp:
+  - 2022
+  - 4
+  - 6
+  - 11
+  - 58
+  - 35
+  - 87514000
+  orderStatus: "OPEN"
+  totalPrice: "5.00"
