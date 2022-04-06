@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Null;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
@@ -43,7 +44,7 @@ public class MovieController {
             response.setResponseCode(ResponseCode.OK);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } else {
-            GeneralApiResponse response = new GeneralApiResponse(ResponseCode.INVALID_REQUEST, "Movies not found");
+            GeneralApiResponse response = new GeneralApiResponse(ResponseCode.OK, "Movies not found");
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
     }
@@ -128,7 +129,7 @@ public class MovieController {
             return new ResponseEntity<>(response, HttpStatus.OK);
 
         } catch (NotFoundException e) {
-            GeneralApiResponse response = new GeneralApiResponse(ResponseCode.INVALID_REQUEST, e.getMessage());
+            GeneralApiResponse response = new GeneralApiResponse(ResponseCode.OK, e.getMessage());
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
     }
@@ -149,7 +150,7 @@ public class MovieController {
             return new ResponseEntity<>(response, HttpStatus.OK);
 
         } catch (NotFoundException e) {
-            GeneralApiResponse response = new GeneralApiResponse(ResponseCode.INVALID_REQUEST, e.getMessage());
+            GeneralApiResponse response = new GeneralApiResponse(ResponseCode.OK, e.getMessage());
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
     }

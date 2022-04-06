@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -27,7 +28,7 @@ class MovieTests {
     @Autowired
     private TestRestTemplate restTemplate;
 
-    private final String[] getEndpoints = {"/movies", "/movies/test"};
+    private final String[] getEndpoints = {"/movies", "/movies/testId", "/movies/test"};
 
     @Test
     void testSuccessfulResponseShouldContainOkStatus() throws Exception {
@@ -65,6 +66,7 @@ class MovieTests {
         movie.setImdbId(movieId);
         movie.setReleaseDate(LocalDate.now());
         movie.setTitle("TestTitle");
+        movie.setCategories(new HashSet<>());
         HttpEntity<Movie> request = new HttpEntity<>(movie);
 
         ResponseEntity<MovieApiResponse> response = this.restTemplate.postForEntity(addUrl, request, MovieApiResponse.class);
