@@ -8,6 +8,7 @@ import ee.fujitsu.movieapi.rest.api.exception.movie.MovieValidationException;
 import ee.fujitsu.movieapi.rest.api.response.GeneralApiResponse;
 import ee.fujitsu.movieapi.rest.api.response.MovieApiResponse;
 import ee.fujitsu.movieapi.rest.api.response.ResponseCode;
+import ee.fujitsu.movieapi.rest.controller.utils.MovieUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -64,9 +65,9 @@ public class MovieController {
             response.setData(List.of(movieRepository.add(movie)));
             return new ResponseEntity<>(response, HttpStatus.OK);
 
-        } catch (IOException | MovieIdNotUniqueException e) {
+        } catch (IOException | MovieIdNotUniqueException | MovieValidationException e) {
             GeneralApiResponse response = new GeneralApiResponse(ResponseCode.INVALID_REQUEST, e.getMessage());
-            return new ResponseEntity<>(response, HttpStatus.OK);
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -101,15 +102,18 @@ public class MovieController {
     @RequestMapping(value="/update", method = RequestMethod.PUT, consumes="application/json", produces = "application/json")
     public ResponseEntity<?> updateMovie(@RequestParam String id, @RequestBody Movie movie) {
         try {
+            MovieUtils.checkNecessaryFieldsPresent(movie);
+
             GeneralApiResponse response = new GeneralApiResponse();
             response.setResponseCode(ResponseCode.OK);
             response.setMessage("Movie updated");
+
             movieRepository.updateMovie(id, movie);
             return new ResponseEntity<>(response, HttpStatus.OK);
 
         } catch (IOException | NotFoundException | MovieIdNotUniqueException | MovieValidationException e) {
             GeneralApiResponse response = new GeneralApiResponse(ResponseCode.INVALID_REQUEST, e.getMessage());
-            return new ResponseEntity<>(response, HttpStatus.OK);
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
     }
 

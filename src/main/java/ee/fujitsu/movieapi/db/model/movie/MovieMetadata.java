@@ -10,7 +10,7 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MovieMetadata {
     @JsonProperty("Response")
-    private String dataFound;
+    private boolean dataFound;
     @JsonProperty("Rated")
     private String rated;
     @JsonProperty("Runtime")
@@ -24,11 +24,11 @@ public class MovieMetadata {
     @JsonProperty("Ratings")
     private List<MovieRating> ratings;
 
-    public String getDataFound() {
+    public boolean getDataFound() {
         return dataFound;
     }
 
-    public void setDataFound(String dataFound) {
+    public void setDataFound(boolean dataFound) {
         this.dataFound = dataFound;
     }
 
@@ -79,4 +79,5 @@ public class MovieMetadata {
     public void setRatings(List<MovieRating> ratings) {
         this.ratings = ratings;
     }
+
 }

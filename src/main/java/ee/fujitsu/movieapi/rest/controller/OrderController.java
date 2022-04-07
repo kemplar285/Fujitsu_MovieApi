@@ -153,19 +153,19 @@ public class OrderController {
             return new ResponseEntity<>(response, HttpStatus.OK);
 
         } catch (NotFoundException e) {
-            GeneralApiResponse response = new GeneralApiResponse(ResponseCode.INVALID_REQUEST, e.getMessage());
+            GeneralApiResponse response = new GeneralApiResponse(ResponseCode.OK, e.getMessage());
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
     }
 
     /**
-     * Closes the order. It then becomes immutable. After closing the order, its data is saved to statistics.
+     * Closes the order. It then becomes immutable. After closing the order, its data is added to statistics
      *
      * @param orderId id of an order to close
      * @return Final order invoice.
      */
 
-    @RequestMapping(value = "/checkout", method = RequestMethod.PUT, produces = "application/json")
+    @RequestMapping(value = "/checkout", method = RequestMethod.PATCH, produces = "application/json")
     public ResponseEntity<?> checkout(@RequestParam String orderId) {
         try {
             //Closing the order
@@ -202,12 +202,18 @@ public class OrderController {
         }
     }
 
+    /**
+     * Deletes the order by its id.
+     * At first I was planning to forbid deleting closed order, but now I'm not so sure.
+     * @param id
+     * @return
+     */
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE, produces = "application/json")
-    public ResponseEntity<?> deleteMovie(@RequestParam String id) {
+    public ResponseEntity<?> deleteOrder(@RequestParam String id) {
         try {
-            if (orderRepository.findById(id).getOrderStatus().equals(OrderStatus.CLOSED)) {
-                throw new OrderAlreadyClosedException();
-            }
+//            if (orderRepository.findById(id).getOrderStatus().equals(OrderStatus.CLOSED)) {
+//                throw new OrderAlreadyClosedException();
+//            }
             orderRepository.delete(id);
 
             GeneralApiResponse response = new GeneralApiResponse();
@@ -215,8 +221,29 @@ public class OrderController {
             response.setMessage("Order deleted");
             return new ResponseEntity<>(response, HttpStatus.OK);
 
-        } catch (NotFoundException | IOException | OrderAlreadyClosedException e) {
+        } catch (NotFoundException | IOException e) {
             GeneralApiResponse response = new GeneralApiResponse(ResponseCode.INVALID_REQUEST, e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
+    }
+
+
+    /**
+     * Deletes a movie record from statistics
+     * @param movieId movie id
+     */
+    @RequestMapping(value = "/stats/clear", method = RequestMethod.DELETE, produces = "application/json")
+    public ResponseEntity<?> deleteFromStats(@RequestParam String movieId) {
+        try {
+
+            orderRepository.deleteFromStats(movieId);
+            GeneralApiResponse response = new GeneralApiResponse();
+            response.setResponseCode(ResponseCode.OK);
+            response.setMessage("Statistics cleared");
+            return new ResponseEntity<>(response, HttpStatus.OK);
+
+        } catch (IOException e) {
+            GeneralApiResponse response = new GeneralApiResponse(ResponseCode.SYSTEM_ERROR, e.getMessage());
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
     }

@@ -6,32 +6,27 @@ import ee.fujitsu.movieapi.rest.api.response.MovieApiResponse;
 import ee.fujitsu.movieapi.rest.api.response.ResponseCode;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.UUID;
+import org.springframework.http.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class MovieTests {
+class MovieTests extends AbstractMovieApiTest {
+    private static final Logger logger = LoggerFactory.getLogger(MovieTests.class);
     @LocalServerPort
     private int port;
     @Autowired
     private TestRestTemplate restTemplate;
 
-    private final String[] getEndpoints = {"/movies", "/movies/testId", "/movies/test"};
-
     @Test
     void testSuccessfulResponseShouldContainOkStatus() throws Exception {
+        String[] getEndpoints = {"/movies", "/movies/id/testId", "/movies/test"};
         for (String end : getEndpoints) {
             verifyResponse("http://localhost:" + port + end, ResponseCode.OK, false);
         }
@@ -44,75 +39,128 @@ class MovieTests {
     }
 
     @Test
-    void testValidMovieShouldSuccessfullyBeAddedAndDeleted() throws Exception {
-        String id = UUID.randomUUID().toString();
-        addMovie(id);
-        updateMovie(id);
-        deleteMovie(id);
+    void testValidMovieShouldSuccessfullyBeAddedUpdatedAndDeleted() throws Exception {
+        Movie movie = getMockMovie();
+        ResponseEntity<MovieApiResponse> addResponse = addMovie(movie);
+        ResponseEntity<GeneralApiResponse> updateResponse = updateMovie(movie.getImdbId());
+        ResponseEntity<GeneralApiResponse> deleteResponse = deleteMovie(movie.getImdbId());
+        assertEquals(ResponseCode.OK, addResponse.getBody().getResponseCode());
+        assertEquals(HttpStatus.OK, addResponse.getStatusCode());
+        assertEquals(ResponseCode.OK, updateResponse.getBody().getResponseCode());
+        assertEquals(HttpStatus.OK, updateResponse.getStatusCode());
+        assertEquals(ResponseCode.OK, deleteResponse.getBody().getResponseCode());
+        assertEquals(HttpStatus.OK, deleteResponse.getStatusCode());
+    }
+
+    @Test
+    void testMovieWithMissingValuesShouldNotBeCreated() {
+        ResponseEntity<GeneralApiResponse> response = addInvalidMovie();
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+    }
+
+    @Test
+    void testUpdateShouldNotWorkWithMissingValues() {
+        Movie movie = getMockMovie();
+        addMovie(movie);
+        ResponseEntity<MovieApiResponse> response = invalidUpdateMovie(movie.getImdbId());
+        deleteMovie(movie.getImdbId());
+
+        assertEquals(ResponseCode.INVALID_REQUEST, response.getBody().getResponseCode());
+    }
+
+    @Test
+    void testDeleteTwoTimesShouldBeSafe() {
+        Movie movie = getMockMovie();
+        addMovie(movie);
+        ResponseEntity<GeneralApiResponse> delresponse = deleteMovie(movie.getImdbId());
+        assertEquals(200, delresponse.getStatusCodeValue());
+        assertEquals(ResponseCode.OK, delresponse.getBody().getResponseCode());
+        assertNotNull(delresponse.getBody().getMessage());
+        // Try to delete for the second time
+        delresponse = deleteMovie(movie.getImdbId());
+        assertEquals(ResponseCode.INVALID_REQUEST, delresponse.getBody().getResponseCode());
+        assertNotNull(delresponse.getBody().getMessage());
+        logger.info(delresponse.getBody().toString());
+    }
+
+    @Test
+    void testMovieIdShouldBeUnique(){
+        Movie movie = getMockMovie();
+        addMovie(movie);
+        ResponseEntity<MovieApiResponse> response = addMovie(movie);
+        deleteMovie(movie);
+        assertEquals(ResponseCode.INVALID_REQUEST, response.getBody().getResponseCode());
+    }
+
+    @Test
+    void omdbFetchWorksWithCorrectId() {
+        Movie movie = getMockMovie();
+        movie.setImdbId("tt0137523");
+        addMovie(movie);
+        ResponseEntity<MovieApiResponse> response = findMovieById(movie.getImdbId());
+        logger.info(response.getBody().toString());
+        assertEquals(true, response.getBody().getData().get(0).movieMetadata.getDataFound());
+        deleteMovie(movie.getImdbId());
+    }
+
+    public ResponseEntity<GeneralApiResponse> deleteMovie(String movieId) {
+        String delUrl = "http://localhost:" + port + "/movies/delete?id=" + movieId;
+        HttpEntity<Movie> entity = new HttpEntity<>(null);
+        ResponseEntity<GeneralApiResponse> response = this.restTemplate.exchange
+                (delUrl, HttpMethod.DELETE, entity, GeneralApiResponse.class);
+        return response;
     }
 
     public void verifyResponse(String url, ResponseCode code, boolean expectMessage) throws Exception {
         GeneralApiResponse response = restTemplate.getForObject(url, GeneralApiResponse.class);
-        System.out.println(response);
+        logger.info(response.toString());
         assertEquals(code, response.getResponseCode());
         if (expectMessage) {
             assertNotNull(response.getMessage());
         }
     }
 
-    public void addMovie(String movieId) {
+    public ResponseEntity<GeneralApiResponse> addInvalidMovie() {
+        Movie movie = getMockMovie();
+        movie.setImdbId("");
         String addUrl = "http://localhost:" + port + "/movies/add";
-        Movie movie = new Movie();
-        movie.setImdbId(movieId);
-        movie.setReleaseDate(LocalDate.now());
-        movie.setTitle("TestTitle");
-        movie.setCategories(new HashSet<>());
-        HttpEntity<Movie> request = new HttpEntity<>(movie);
-
-        ResponseEntity<MovieApiResponse> response = this.restTemplate.postForEntity(addUrl, request, MovieApiResponse.class);
-        assertEquals(200, response.getStatusCodeValue());
-        assertEquals(ResponseCode.OK, response.getBody().getResponseCode());
-        System.out.println(response.getBody());
-
-
-        // Second request with the same id should be invalid
-        response = this.restTemplate.postForEntity(addUrl, request, MovieApiResponse.class);
-        assertEquals(200, response.getStatusCodeValue());
-        assertEquals(ResponseCode.INVALID_REQUEST, response.getBody().getResponseCode());
-        assertNotNull(response.getBody().getMessage());
-        System.out.println(response.getBody());
+        HttpEntity<Movie> request = new HttpEntity<Movie>(movie, getJsonHeaders());
+        ResponseEntity<GeneralApiResponse> response = this.restTemplate.postForEntity(addUrl, request, GeneralApiResponse.class);
+        logger.info(response.getBody().toString());
+        return response;
     }
 
-    public void updateMovie(String movieId) {
-        String movieUrl = "http://localhost:" + port + "/movies/id/" + movieId;
-        ResponseEntity<MovieApiResponse> response = this.restTemplate.getForEntity(movieUrl, MovieApiResponse.class);
+    public ResponseEntity<GeneralApiResponse> updateMovie(String movieId) {
+        // Get movie from db
+        ResponseEntity<MovieApiResponse> response = findMovieById(movieId);
         Movie movie = response.getBody().getData().get(0);
         movie.setTitle("updated");
+
+        // Update movie
         String updateUrl = "http://localhost:" + port + "/movies/update?id=" + movieId;
         ResponseEntity<GeneralApiResponse> secondResponse = this.restTemplate.exchange
                 (updateUrl, HttpMethod.PUT, new HttpEntity<>(movie), GeneralApiResponse.class);
-        assertEquals(ResponseCode.OK, secondResponse.getBody().getResponseCode());
-        assertEquals(HttpStatus.OK, secondResponse.getStatusCode());
-        System.out.println(secondResponse.getBody());
+        return secondResponse;
     }
 
-    public void deleteMovie(String movieId) {
-        String addUrl = "http://localhost:" + port + "/movies/delete?id=" + movieId;
-        HttpEntity<Movie> entity = new HttpEntity<>(null);
-        ResponseEntity<GeneralApiResponse> response = this.restTemplate.exchange
-                (addUrl, HttpMethod.DELETE, entity, GeneralApiResponse.class);
+    public ResponseEntity<MovieApiResponse> invalidUpdateMovie(String movieId) {
+        ResponseEntity<MovieApiResponse> findResponse = findMovieById(movieId);
+        Movie movie = findResponse.getBody().getData().get(0);
+        //Missing value - release date
+        movie.setReleaseDate(null);
 
-        assertEquals(200, response.getStatusCodeValue());
-        assertEquals(ResponseCode.OK, response.getBody().getResponseCode());
-        assertNotNull(response.getBody().getMessage());
-        System.out.println(response.getBody());
+        String updateUrl = "http://localhost:" + port + "/movies/update?id=" + movieId;
+        HttpEntity<Movie> entity = new HttpEntity<>(movie, getJsonHeaders());
+        ResponseEntity<MovieApiResponse> secondResponse = this.restTemplate.exchange
+                (updateUrl, HttpMethod.PUT, entity, MovieApiResponse.class);
+        logger.info(secondResponse.getBody().toString());
+        return secondResponse;
+    }
 
-        // Second request with the same id should be invalid
-        response = this.restTemplate.exchange
-                (addUrl, HttpMethod.DELETE, entity, GeneralApiResponse.class);
-        assertEquals(ResponseCode.INVALID_REQUEST, response.getBody().getResponseCode());
-        assertNotNull(response.getBody().getMessage());
-        System.out.println(response.getBody());
+    public ResponseEntity<MovieApiResponse> findMovieById(String movieId) {
+        String movieUrl = "http://localhost:" + port + "/movies/id/" + movieId;
+        ResponseEntity<MovieApiResponse> response = this.restTemplate.getForEntity(movieUrl, MovieApiResponse.class);
+        return response;
     }
 
 

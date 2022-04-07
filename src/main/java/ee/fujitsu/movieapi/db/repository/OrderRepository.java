@@ -93,7 +93,7 @@ public class OrderRepository implements IRepository<Order>{
     @Override
     public Order findById(String id) throws NotFoundException {
         return orders.stream().filter(order -> String.valueOf(order.getOrderId()).equals(id))
-                .findFirst().orElseThrow(NotFoundException::new);
+                .findFirst().orElseThrow(() -> new NotFoundException("Order not found"));
     }
 
     /**
@@ -170,5 +170,15 @@ public class OrderRepository implements IRepository<Order>{
             recordStatistics(this.statistics);
         }
         return statistics;
+    }
+
+    /**
+     * Deletes from stats and saves
+     * @param movieId movie id in stats
+     */
+    public void deleteFromStats(String movieId) throws IOException {
+        getStatistics().removeFromRentedFor(movieId);
+        getStatistics().removeFromOrderCount(movieId);
+        recordStatistics(statistics);
     }
 }

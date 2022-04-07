@@ -37,4 +37,12 @@ public class OrderStatistics {
         movieRentedFor.putIfAbsent(movieId, 0);
         movieRentedFor.put(movieId, movieRentedFor.get(movieId).intValue() + value);
     }
+
+    public void removeFromOrderCount(String movieId){
+        movieOrderCount.remove(movieId);
+    }
+
+    public  void removeFromRentedFor(String movieId){
+        movieRentedFor.remove(movieId);
+    }
 }

@@ -95,8 +95,8 @@ public class MovieRepository implements IRepository<Movie> {
      * @return movies List of movies
      * @throws IOException TBA
      */
-    public Movie add(Movie movie) throws IOException, MovieIdNotUniqueException {
-        if (!MovieUtils.checkUnique(movie.getImdbId(), movies)) {
+    public Movie add(Movie movie) throws IOException, MovieIdNotUniqueException, MovieValidationException {
+        if (!MovieUtils.checkNecessaryFieldsPresent(movie) || !MovieUtils.checkUnique(movie.getImdbId(), movies)) {
             throw new MovieIdNotUniqueException();
         }
         movie.setPriceClass();
@@ -174,7 +174,7 @@ public class MovieRepository implements IRepository<Movie> {
         MovieMetadata metadata = restTemplate.getForObject(url, MovieMetadata.class);
         return movies.stream().filter(movie -> movie.getImdbId().equals(id))
                 .peek(movie -> movie.setMovieMetadata(metadata))
-                .findFirst().orElseThrow(NotFoundException::new);
+                .findFirst().orElseThrow(() -> new NotFoundException("Movie not found"));
     }
 
 
