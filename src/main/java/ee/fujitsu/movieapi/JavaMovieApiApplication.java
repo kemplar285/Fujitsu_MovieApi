@@ -30,6 +30,7 @@ public class JavaMovieApiApplication {
 		ApiConfiguration apiConfig = context.getBean(ApiConfiguration.class);
 		logger.info("Using movie database file: " + apiConfig.getMovieFileName() + apiConfig.getFileExtension());
 		logger.info("Using order database file: " + apiConfig.getOrderFileName() + apiConfig.getFileExtension());
+		logger.info("Using statistics database file: " + apiConfig.getOrderStatsFileName() + apiConfig.getFileExtension());
 	}
 
 	@Bean

@@ -102,8 +102,8 @@ public class MovieController {
     @RequestMapping(value="/update", method = RequestMethod.PUT, consumes="application/json", produces = "application/json")
     public ResponseEntity<?> updateMovie(@RequestParam String id, @RequestBody Movie movie) {
         try {
+            movie.setImdbId(id);
             MovieUtils.checkNecessaryFieldsPresent(movie);
-
             GeneralApiResponse response = new GeneralApiResponse();
             response.setResponseCode(ResponseCode.OK);
             response.setMessage("Movie updated");

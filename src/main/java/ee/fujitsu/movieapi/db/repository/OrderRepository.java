@@ -146,7 +146,7 @@ public class OrderRepository implements IRepository<Order>{
         if (apiConfiguration.getFileExtension().equals(".json")) {
             new ObjectMapper().findAndRegisterModules().writeValue(statsDataFile, statistics);
         } else if (apiConfiguration.getFileExtension().equals(".yaml")) {
-            mapper.writeValue(statsDataFile, statsDataFile);
+            mapper.writeValue(statsDataFile, statistics);
         }
     }
 
