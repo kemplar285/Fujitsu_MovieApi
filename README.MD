@@ -1,4 +1,4 @@
-# Fujitsu Java Programming Exercise
+Java Programming Exercise
 
 # 0. Prerequisites
  - Java 17
