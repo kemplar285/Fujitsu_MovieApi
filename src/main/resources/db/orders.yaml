@@ -1,1 +1,21 @@
---- []
+---
+- orderId: "643c5394-ca68-41c1-96ad-62dfa360035b"
+  orderItemList:
+  - movieId: "testId"
+    movieReleaseDate:
+    - 1999
+    - 10
+    - 10
+    rentDurationInWeeks: 1
+    currentPricePerWeek: "1.99"
+    totalPrice: "1.99"
+  timestamp:
+  - 2022
+  - 4
+  - 7
+  - 12
+  - 21
+  - 58
+  - 688820900
+  orderStatus: "OPEN"
+  totalPrice: "1.99"

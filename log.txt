@@ -1,0 +1,156 @@
+[INFO] Scanning for projects...
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for ee.fujitsu:movieapi:jar:0.0.1-SNAPSHOT
+[WARNING] 'dependencies.dependency.(groupId:artifactId:type:classifier)' must be unique: org.springframework.boot:spring-boot-starter-test:jar -> duplicate declaration of version (?) @ line 65, column 15
+[WARNING] 
+[WARNING] It is highly recommended to fix these problems because they threaten the stability of your build.
+[WARNING] 
+[WARNING] For this reason, future Maven versions might no longer support building such malformed projects.
+[WARNING] 
+[INFO] 
+[INFO] ------------------------< ee.fujitsu:movieapi >-------------------------
+[INFO] Building Java Movie API 0.0.1-SNAPSHOT
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-resources-plugin:3.2.0:resources (default-resources) @ movieapi ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Using 'UTF-8' encoding to copy filtered properties files.
+[INFO] Copying 1 resource
+[INFO] Copying 6 resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.8.1:compile (default-compile) @ movieapi ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- maven-resources-plugin:3.2.0:testResources (default-testResources) @ movieapi ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Using 'UTF-8' encoding to copy filtered properties files.
+[INFO] skip non existing resourceDirectory C:\Desktop\Projects\movieapi\src\test\resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.8.1:testCompile (default-testCompile) @ movieapi ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.22.2:test (default-test) @ movieapi ---
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running ee.fujitsu.movieapi.MovieTests
+15:31:12.587 [main] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating CacheAwareContextLoaderDelegate from class [org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate]
+15:31:12.593 [main] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating BootstrapContext using constructor [public org.springframework.test.context.support.DefaultBootstrapContext(java.lang.Class,org.springframework.test.context.CacheAwareContextLoaderDelegate)]
+15:31:12.618 [main] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating TestContextBootstrapper for test class [ee.fujitsu.movieapi.MovieTests] from class [org.springframework.boot.test.context.SpringBootTestContextBootstrapper]
+15:31:12.625 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Neither @ContextConfiguration nor @ContextHierarchy found for test class [ee.fujitsu.movieapi.MovieTests], using SpringBootContextLoader
+15:31:12.627 [main] DEBUG org.springframework.test.context.support.AbstractContextLoader - Did not detect default resource location for test class [ee.fujitsu.movieapi.MovieTests]: class path resource [ee/fujitsu/movieapi/MovieTests-context.xml] does not exist
+15:31:12.627 [main] DEBUG org.springframework.test.context.support.AbstractContextLoader - Did not detect default resource location for test class [ee.fujitsu.movieapi.MovieTests]: class path resource [ee/fujitsu/movieapi/MovieTestsContext.groovy] does not exist
+15:31:12.628 [main] INFO org.springframework.test.context.support.AbstractContextLoader - Could not detect default resource locations for test class [ee.fujitsu.movieapi.MovieTests]: no resource found for suffixes {-context.xml, Context.groovy}.
+15:31:12.628 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [ee.fujitsu.movieapi.MovieTests]: MovieTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+15:31:12.657 [main] DEBUG org.springframework.test.context.support.ActiveProfilesUtils - Could not find an 'annotation declaring class' for annotation type [org.springframework.test.context.ActiveProfiles] and class [ee.fujitsu.movieapi.MovieTests]
+15:31:12.699 [main] DEBUG org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider - Identified candidate component class: file [C:\Desktop\Projects\movieapi\target\classes\ee\fujitsu\movieapi\JavaMovieApiApplication.class]
+15:31:12.700 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration ee.fujitsu.movieapi.JavaMovieApiApplication for test class ee.fujitsu.movieapi.MovieTests
+15:31:12.766 [main] DEBUG org.springframework.boot.test.context.SpringBootTestContextBootstrapper - @TestExecutionListeners is not present for class [ee.fujitsu.movieapi.MovieTests]: using defaults.
+15:31:12.766 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.event.ApplicationEventsTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener, org.springframework.test.context.event.EventPublishingTestExecutionListener]
+15:31:12.775 [main] DEBUG org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Skipping candidate TestExecutionListener [org.springframework.test.context.transaction.TransactionalTestExecutionListener] due to a missing dependency. Specify custom listener classes or make the default listener classes and their required dependencies available. Offending class: [org/springframework/transaction/interceptor/TransactionAttributeSource]
+15:31:12.775 [main] DEBUG org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Skipping candidate TestExecutionListener [org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener] due to a missing dependency. Specify custom listener classes or make the default listener classes and their required dependencies available. Offending class: [org/springframework/transaction/interceptor/TransactionAttribute]
+15:31:12.775 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@3daf7722, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@78641d23, org.springframework.test.context.event.ApplicationEventsTestExecutionListener@74589991, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@146dfe6, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@4716be8b, org.springframework.test.context.support.DirtiesContextTestExecutionListener@1fc32e4f, org.springframework.test.context.event.EventPublishingTestExecutionListener@2f67b837, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@1869fbd2, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@6af9fcb2, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@6cce16f4, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@7efaad5a, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@291a7e3c, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener@ca30bc1]
+15:31:12.778 [main] DEBUG org.springframework.test.context.support.AbstractDirtiesContextTestExecutionListener - Before test class: context [DefaultTestContext@141e5bef testClass = MovieTests, testInstance = [null], testMethod = [null], testException = [null], mergedContextConfiguration = [WebMergedContextConfiguration@5f9be66c testClass = MovieTests, locations = '{}', classes = '{class ee.fujitsu.movieapi.JavaMovieApiApplication}', contextInitializerClasses = '[]', activeProfiles = '{}', propertySourceLocations = '{}', propertySourceProperties = '{org.springframework.boot.test.context.SpringBootTestContextBootstrapper=true, server.port=0}', contextCustomizers = set[org.springframework.boot.test.context.filter.ExcludeFilterContextCustomizer@2c35e847, org.springframework.boot.test.json.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer@5ba3f27a, org.springframework.boot.test.mock.mockito.MockitoContextCustomizer@0, org.springframework.boot.test.web.client.TestRestTemplateContextCustomizer@6e0f5f7f, org.springframework.boot.test.autoconfigure.actuate.metrics.MetricsExportContextCustomizerFactory$DisableMetricExportContextCustomizer@53ce1329, org.springframework.boot.test.autoconfigure.properties.PropertyMappingContextCustomizer@0, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverContextCustomizerFactory$Customizer@2dc54ad4, org.springframework.boot.test.context.SpringBootTestArgs@1, org.springframework.boot.test.context.SpringBootTestWebEnvironment@4d3167f4], resourceBasePath = 'src/main/webapp', contextLoader = 'org.springframework.boot.test.context.SpringBootContextLoader', parent = [null]], attributes = map['org.springframework.test.context.web.ServletTestExecutionListener.activateListener' -> false]], class annotated with @DirtiesContext [false] with mode [null].
+15:31:12.788 [main] DEBUG org.springframework.test.context.support.DependencyInjectionTestExecutionListener - Performing dependency injection for test context [[DefaultTestContext@141e5bef testClass = MovieTests, testInstance = ee.fujitsu.movieapi.MovieTests@2ef14fe, testMethod = [null], testException = [null], mergedContextConfiguration = [WebMergedContextConfiguration@5f9be66c testClass = MovieTests, locations = '{}', classes = '{class ee.fujitsu.movieapi.JavaMovieApiApplication}', contextInitializerClasses = '[]', activeProfiles = '{}', propertySourceLocations = '{}', propertySourceProperties = '{org.springframework.boot.test.context.SpringBootTestContextBootstrapper=true, server.port=0}', contextCustomizers = set[org.springframework.boot.test.context.filter.ExcludeFilterContextCustomizer@2c35e847, org.springframework.boot.test.json.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer@5ba3f27a, org.springframework.boot.test.mock.mockito.MockitoContextCustomizer@0, org.springframework.boot.test.web.client.TestRestTemplateContextCustomizer@6e0f5f7f, org.springframework.boot.test.autoconfigure.actuate.metrics.MetricsExportContextCustomizerFactory$DisableMetricExportContextCustomizer@53ce1329, org.springframework.boot.test.autoconfigure.properties.PropertyMappingContextCustomizer@0, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverContextCustomizerFactory$Customizer@2dc54ad4, org.springframework.boot.test.context.SpringBootTestArgs@1, org.springframework.boot.test.context.SpringBootTestWebEnvironment@4d3167f4], resourceBasePath = 'src/main/webapp', contextLoader = 'org.springframework.boot.test.context.SpringBootContextLoader', parent = [null]], attributes = map['org.springframework.test.context.web.ServletTestExecutionListener.activateListener' -> false, 'org.springframework.test.context.event.ApplicationEventsTestExecutionListener.recordApplicationEvents' -> false]]].
+OK
+2022-12-13 15:31:15.983  WARN 11676 --- [o-auto-1-exec-4] o.s.web.servlet.PageNotFound             : No mapping for GET /%F0%A0%B7%A8%E1%8D%A9%F0%A0%81%A9%F0%A1%AE%9B%EC%8A%86%F0%98%9C%99
+GeneralApiResponse{responseCode=INVALID_REQUEST, message=No handler found for GET /%F0%A0%B7%A8%E1%8D%A9%F0%A0%81%A9%F0%A1%AE%9B%EC%8A%86%F0%98%9C%99}
+1.99
+OLD
+GeneralApiResponse{responseCode=INVALID_REQUEST, message=Not found!}
+GeneralApiResponse{responseCode=OK}
+GeneralApiResponse{responseCode=OK, message=Movie found.}
+GeneralApiResponse{responseCode=OK}
+INVALID_REQUEST
+INVALID_REQUEST
+OK
+200 OK
+TestTitle
+INVALID_REQUEST
+200 OK
+OK
+[ERROR] Tests run: 15, Failures: 3, Errors: 0, Skipped: 0, Time elapsed: 4.379 s <<< FAILURE! - in ee.fujitsu.movieapi.MovieTests
+[ERROR] categoriesCantBeEmptyStringTest  Time elapsed: 0.014 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <INVALID_REQUEST> but was: <OK>
+	at ee.fujitsu.movieapi.MovieTests.categoriesCantBeEmptyStringTest(MovieTests.java:163)
+
+[ERROR] zeroLengthTitleUpdateTest  Time elapsed: 0.009 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <INVALID_REQUEST> but was: <OK>
+	at ee.fujitsu.movieapi.MovieTests.zeroLengthTitleUpdateTest(MovieTests.java:140)
+
+[ERROR] releaseDateCantBeTooLongAgo  Time elapsed: 0.008 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <INVALID_REQUEST> but was: <OK>
+	at ee.fujitsu.movieapi.MovieTests.releaseDateCantBeTooLongAgo(MovieTests.java:151)
+
+[INFO] Running ee.fujitsu.movieapi.OrderTests
+Order not found
+OrderApiResponse{OrderApiResponse{responseCode=INVALID_REQUEST, message=Order not found}}
+0
+1
+Movie order count: 2
+Movie order time in weeks: 10
+0
+0.00
+OK
+MovieApiResponse{MovieApiResponse{responseCode=OK, message=Movie added.}, movieData=[ee.fujitsu.movieapi.db.model.movie.Movie@73ddb7ef]}
+OrderApiResponse{OrderApiResponse{responseCode=OK, message=Order created.}, orderData=[ee.fujitsu.movieapi.db.model.order.Order@2d593b56]}
+OrderApiResponse{OrderApiResponse{responseCode=OK, message=Order extended.}, orderData=[ee.fujitsu.movieapi.db.model.order.Order@67f8f5a6]}
+0
+OrderApiResponse{OrderApiResponse{responseCode=OK, message=Final order invoice.}, orderData=[ee.fujitsu.movieapi.db.model.order.Order@7037a680]}
+MovieApiResponse{MovieApiResponse{responseCode=OK, message=Movie added.}, movieData=[ee.fujitsu.movieapi.db.model.movie.Movie@42edde25]}
+OrderApiResponse{OrderApiResponse{responseCode=OK, message=Order created.}, orderData=[ee.fujitsu.movieapi.db.model.order.Order@f237ae7]}
+0
+GeneralApiResponse{responseCode=OK, message=Orders not found.}
+GeneralApiResponse{responseCode=OK, message=Order not found}
+GeneralApiResponse{responseCode=OK}
+MovieApiResponse{MovieApiResponse{responseCode=OK, message=Movie added.}, movieData=[ee.fujitsu.movieapi.db.model.movie.Movie@f44d033]}
+OrderApiResponse{OrderApiResponse{responseCode=OK, message=Order created.}, orderData=[ee.fujitsu.movieapi.db.model.order.Order@e8c84eb]}
+25.0
+50.00
+0.00
+OK
+0
+[ERROR] Tests run: 15, Failures: 3, Errors: 0, Skipped: 0, Time elapsed: 3.557 s <<< FAILURE! - in ee.fujitsu.movieapi.OrderTests
+[ERROR] checkoutWrongIDTest  Time elapsed: 0.014 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <OK> but was: <INVALID_REQUEST>
+	at ee.fujitsu.movieapi.OrderTests.checkoutWrongIDTest(OrderTests.java:234)
+
+[ERROR] negativeWeeksOrderTest  Time elapsed: 0.202 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <INVALID_REQUEST> but was: <OK>
+	at ee.fujitsu.movieapi.OrderTests.negativeWeeksOrderTest(OrderTests.java:200)
+
+[ERROR] zeroWeeksOrderTest  Time elapsed: 0.209 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <INVALID_REQUEST> but was: <OK>
+	at ee.fujitsu.movieapi.OrderTests.zeroWeeksOrderTest(OrderTests.java:225)
+
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Failures: 
+[ERROR]   MovieTests.categoriesCantBeEmptyStringTest:163 expected: <INVALID_REQUEST> but was: <OK>
+[ERROR]   MovieTests.releaseDateCantBeTooLongAgo:151 expected: <INVALID_REQUEST> but was: <OK>
+[ERROR]   MovieTests.zeroLengthTitleUpdateTest:140 expected: <INVALID_REQUEST> but was: <OK>
+[ERROR]   OrderTests.checkoutWrongIDTest:234 expected: <OK> but was: <INVALID_REQUEST>
+[ERROR]   OrderTests.negativeWeeksOrderTest:200 expected: <INVALID_REQUEST> but was: <OK>
+[ERROR]   OrderTests.zeroWeeksOrderTest:225 expected: <INVALID_REQUEST> but was: <OK>
+[INFO] 
+[ERROR] Tests run: 30, Failures: 6, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  10.346 s
+[INFO] Finished at: 2022-12-13T15:31:21+02:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:2.22.2:test (default-test) on project movieapi: There are test failures.
+[ERROR] 
+[ERROR] Please refer to C:\Desktop\Projects\movieapi\target\surefire-reports for the individual test results.
+[ERROR] Please refer to dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
